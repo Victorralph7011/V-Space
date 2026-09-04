@@ -3,9 +3,10 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import {
   GoogleAuthProvider,
+  getRedirectResult,
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  signInWithPopup,
+  signInWithRedirect,
   createUserWithEmailAndPassword,
   signOut as firebaseSignOut,
   updateProfile,
@@ -13,6 +14,7 @@ import {
 } from 'firebase/auth';
 import {
   ensureUserProfile,
+  friendlyAuthError,
   getAuth,
   itemStore,
   resyncReminders,
@@ -44,6 +46,14 @@ interface AuthState {
   signUpEmail: (email: string, password: string, displayName: string) => Promise<void>;
   signInGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
+  /**
+   * Set only when a completed Google redirect turned out to have failed
+   * (e.g. the account already exists under a different provider). Because
+   * `signInWithRedirect` navigates the whole page away, there is no promise
+   * left to reject by the time the answer is known — the failure surfaces
+   * here instead, on the page load that follows the redirect back.
+   */
+  googleRedirectError: string | null;
 }
 
 const AuthContext = createContext<AuthState | null>(null);
@@ -53,6 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [profile, setProfile] = useState<VUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [googleRedirectError, setGoogleRedirectError] = useState<string | null>(null);
 
   useEffect(() => {
     // One-time browser-only platform wiring (see each init function — all are
@@ -66,6 +77,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setReady(true);
   }, []);
+
+  // Picks up the outcome of `signInWithRedirect`, once the page reloads
+  // having been sent back from Google. A *successful* sign-in is already
+  // handled by `onAuthStateChanged` below — this exists purely to catch the
+  // failure case, which a redirect (unlike a popup) has no promise left to
+  // reject by the time the answer is known.
+  useEffect(() => {
+    if (!ready) return;
+    getRedirectResult(getAuth()).catch((error: unknown) => {
+      setGoogleRedirectError(friendlyAuthError(error));
+    });
+  }, [ready]);
 
   useEffect(() => {
     if (!ready) return;
@@ -115,6 +138,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       user,
       profile,
       loading,
+      googleRedirectError,
       async signInEmail(email, password) {
         await signInWithEmailAndPassword(getAuth(), email, password);
       },
@@ -125,13 +149,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       },
       async signInGoogle() {
-        await signInWithPopup(getAuth(), new GoogleAuthProvider());
+        // A redirect, not a popup: popups are blocked outright by many
+        // browsers' popup blockers and privacy extensions, break under
+        // third-party storage partitioning, and cannot be hosted at all once
+        // this app is running as an installed PWA (no browser chrome to open
+        // one in). This call navigates the page away; the outcome is picked
+        // up above, after Google sends the user back.
+        await signInWithRedirect(getAuth(), new GoogleAuthProvider());
       },
       async signOut() {
         await firebaseSignOut(getAuth());
       },
     }),
-    [user, profile, loading],
+    [user, profile, loading, googleRedirectError],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

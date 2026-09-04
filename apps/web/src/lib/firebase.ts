@@ -3,6 +3,7 @@
 import { initializeApp, getApps } from 'firebase/app';
 import {
   browserLocalPersistence,
+  browserPopupRedirectResolver,
   indexedDBLocalPersistence,
   initializeAuth,
 } from 'firebase/auth';
@@ -39,6 +40,11 @@ export function initFirebase(): void {
     initAuth: (app) =>
       initializeAuth(app, {
         persistence: [indexedDBLocalPersistence, browserLocalPersistence],
+        // The modular SDK tree-shakes out popup/redirect support by default —
+        // every OAuth provider (Google included) needs this resolver wired
+        // in explicitly, or signInWithPopup/signInWithRedirect throw
+        // `auth/argument-error` immediately, before ever reaching Google.
+        popupRedirectResolver: browserPopupRedirectResolver,
       }),
     initFirestore: (app) =>
       initializeFirestore(app, {

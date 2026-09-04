@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { friendlyAuthError } from '@vspace/core';
@@ -9,12 +9,19 @@ import { Field } from '@/components/ui/Field';
 import { Button } from '@/components/ui/Button';
 
 export default function LoginPage() {
-  const { signInEmail, signInGoogle } = useAuth();
+  const { user, signInEmail, signInGoogle, googleRedirectError } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<'email' | 'google' | null>(null);
+
+  // `signInGoogle` sends the whole page to Google and back — there is no
+  // promise left to resolve into a `router.push` once the user returns here
+  // already signed in, so that has to happen as its own effect instead.
+  useEffect(() => {
+    if (user) router.push('/');
+  }, [user, router]);
 
   async function handleEmailSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -34,11 +41,13 @@ export default function LoginPage() {
     setError(null);
     setLoading('google');
     try {
+      // Navigates the whole page to Google — on success this call never
+      // actually resolves here, the browser just leaves. The `finally`
+      // below only ever runs for an immediate failure (e.g. popups/redirects
+      // disabled by policy) that stops the redirect before it starts.
       await signInGoogle();
-      router.push('/');
     } catch (err) {
       setError(friendlyAuthError(err));
-    } finally {
       setLoading(null);
     }
   }
@@ -70,7 +79,9 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          {error && <p className="text-bodySm text-overdue">{error}</p>}
+          {(error || googleRedirectError) && (
+            <p className="text-bodySm text-overdue">{error ?? googleRedirectError}</p>
+          )}
 
           <Button type="submit" loading={loading === 'email'} className="mt-1.5 w-full">
             Sign in
