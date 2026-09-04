@@ -18,7 +18,7 @@ export function ItemCard({ item }: { item: Item }) {
 
   return (
     <Link
-      href={`/item/${item.id}`}
+      href={`/space/item/${item.id}`}
       className="v-enter flex items-start gap-3 rounded-xl border border-border bg-bg-elevated p-3 transition-colors hover:border-border-strong"
     >
       {item.media?.downloadUrl ? (

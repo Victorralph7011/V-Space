@@ -30,7 +30,7 @@ export function MessageBubble({ message }: { message: Message }) {
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div className={`flex max-w-[85%] flex-col gap-1.5 sm:max-w-[70%] ${isUser ? 'items-end' : 'items-start'}`}>
         {isPhotoAttachment ? (
-          <Link href={`/item/${item.id}`} className="block overflow-hidden rounded-2xl rounded-br-md">
+          <Link href={`/space/item/${item.id}`} className="block overflow-hidden rounded-2xl rounded-br-md">
             <Image
               src={item.media!.downloadUrl}
               alt=""
@@ -74,7 +74,7 @@ export function MessageBubble({ message }: { message: Message }) {
 
         {!isUser && item && (
           <Link
-            href={`/item/${item.id}`}
+            href={`/space/item/${item.id}`}
             className="flex w-full items-center gap-2.5 rounded-xl border border-border bg-bg-elevated px-3 py-2.5 transition-colors hover:border-border-strong"
           >
             <ItemGlyph

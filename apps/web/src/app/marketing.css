@@ -1,0 +1,49 @@
+/*
+ * The marketing landing page's own palette — deliberately separate from
+ * `packages/tokens`, which stays monochrome for the actual product per
+ * AGENTS.md. A landing page is a different surface with a different job: it
+ * has to sell the idea of "everything you scatter across apps, gathered into
+ * one place," and two restrained accents pulled from the hero visual's own
+ * warm/cool split carry that better than pure black-and-white would. Scoped
+ * under `.mkt` so none of this can leak into the app shell.
+ */
+.mkt {
+  --mkt-bg: #0a0c0e;
+  --mkt-bg-2: #101317;
+  --mkt-ink: #ede7dc;
+  --mkt-ink-2: #9ea5a8;
+  --mkt-muted: #6c7378;
+  --mkt-amber: #e8913c;
+  --mkt-teal: #2e6b72;
+  --mkt-hairline: rgba(237, 231, 220, 0.13);
+
+  background: var(--mkt-bg);
+  color: var(--mkt-ink);
+  color-scheme: dark;
+  font-family: var(--font-body);
+}
+
+.mkt .mkt-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.mkt .mkt-label {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+}
+
+/* An outlined numeral — fill removed, stroke left — for the statement fold's
+ * oversized index mark. Not expressible as a Tailwind utility. */
+.mkt .mkt-outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--mkt-ink-2);
+}
+
+.mkt ::selection {
+  background: var(--mkt-amber);
+  color: var(--mkt-bg);
+}

@@ -20,7 +20,7 @@ export default function LoginPage() {
   // promise left to resolve into a `router.push` once the user returns here
   // already signed in, so that has to happen as its own effect instead.
   useEffect(() => {
-    if (user) router.push('/');
+    if (user) router.push('/space');
   }, [user, router]);
 
   async function handleEmailSubmit(event: React.FormEvent) {
@@ -29,7 +29,7 @@ export default function LoginPage() {
     setLoading('email');
     try {
       await signInEmail(email, password);
-      router.push('/');
+      router.push('/space');
     } catch (err) {
       setError(friendlyAuthError(err));
     } finally {

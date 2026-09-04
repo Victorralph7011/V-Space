@@ -45,7 +45,7 @@ export default function AppShellLayout({ children }: { children: React.ReactNode
     <div className="flex h-dvh flex-col-reverse bg-bg md:flex-row">
       <nav className="flex shrink-0 items-center justify-around border-t border-border bg-bg-elevated px-2 py-1.5 md:w-rail md:flex-col md:items-stretch md:justify-start md:border-t-0 md:border-r md:px-3 md:py-5">
         <Link
-          href="/"
+          href="/space"
           className="mb-1 hidden items-center gap-2 px-2.5 pb-4 md:flex"
         >
           <div className="size-6 rounded-md bg-accent" />
@@ -53,19 +53,19 @@ export default function AppShellLayout({ children }: { children: React.ReactNode
         </Link>
 
         <NavItem
-          href="/"
+          href="/space"
           label="Chat"
           Icon={icons.chat}
-          active={pathname === '/'}
+          active={pathname === '/space'}
         />
 
         {SECTIONS.map((section) => (
           <NavItem
             key={section.slug}
-            href={`/${section.slug}`}
+            href={`/space/${section.slug}`}
             label={section.label}
             Icon={iconForKind(section.kinds[0]!)}
-            active={pathname.startsWith(`/${section.slug}`)}
+            active={pathname.startsWith(`/space/${section.slug}`)}
             badge={
               section.slug === 'reminders'
                 ? dueCount || undefined

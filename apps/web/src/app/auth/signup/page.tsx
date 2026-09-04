@@ -23,7 +23,7 @@ export default function SignupPage() {
     setLoading(true);
     try {
       await signUpEmail(email, password, name);
-      router.push('/');
+      router.push('/space');
     } catch (err) {
       setError(friendlyAuthError(err));
     } finally {
