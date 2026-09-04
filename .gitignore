@@ -32,3 +32,6 @@ desktop.ini
 
 # TS
 *.tsbuildinfo
+
+.vercel
+.env*

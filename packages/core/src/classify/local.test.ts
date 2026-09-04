@@ -75,6 +75,37 @@ test('code is detected without a fence', () => {
   assert.equal(c.kind, 'code');
 });
 
+/**
+ * A real failure caught in production: this idea was misfiled into the
+ * Prompt Library (code) instead of Innovative Ideas, because "function" also
+ * matched the loose code-keyword check as a bare English word before the
+ * idea markers ever got a turn.
+ */
+test('a programming word used in plain English does not get misread as code', () => {
+  const cases = [
+    'idea: a browser extension that auto-generates unit tests from a function you highlight',
+    'idea: an app that helps you class your expenses automatically',
+    "idea: let people import their contacts from any app",
+  ];
+  for (const text of cases) {
+    assert.equal(classify(text, NOW).kind, 'idea', text);
+  }
+});
+
+test('real code with those same keywords is still detected', () => {
+  const cases = [
+    'function greet(name) { return `hi ${name}`; }',
+    'class Animal { constructor(name) { this.name = name; } }',
+    'def greet(name):\n    return f"hi {name}"',
+    "import { useState } from 'react';",
+    'public static void main(String[] args) {}',
+    'SELECT id, name FROM users WHERE active = true;',
+  ];
+  for (const text of cases) {
+    assert.equal(classify(text, NOW).kind, 'code', text);
+  }
+});
+
 test('plain text falls through to note rather than failing', () => {
   const c = classify('random thought with no signal at all', NOW);
   assert.equal(c.kind, 'note');

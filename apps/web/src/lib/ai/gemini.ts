@@ -18,11 +18,15 @@ const ENDPOINT = (key: string) =>
   `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${key}`;
 
 // gemini-3.6-flash's thinking pass (see the maxOutputTokens comment below)
-// adds real, variable latency on top of the actual generation — 15s cut off
-// a request that eventually would have completed, surfacing a spurious
-// "aborted" error on `/api/classify` and `/api/enrich` in testing. 25s leaves
-// headroom under the 30s Vercel function duration these routes declare.
-const TIMEOUT_MS = 25_000;
+// adds real, variable latency on top of the actual generation. Measured
+// directly against Vercel's production network (not just a local connection,
+// which was consistently faster) this occasionally ran past 30s — a request
+// that would have completed got hard-killed by Vercel's own platform
+// timeout, which produces a bare "Task timed out" with no graceful message.
+// 55s leaves a 5s buffer under the 60s `maxDuration` these routes declare,
+// so this AbortController fires first and the failure is a real, readable
+// error instead of the platform simply cutting the connection.
+const TIMEOUT_MS = 55_000;
 
 async function describe(input: EnrichInput): Promise<EnrichOutput> {
   const apiKey = process.env.GEMINI_API_KEY;

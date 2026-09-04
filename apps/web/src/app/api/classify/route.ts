@@ -15,12 +15,13 @@ import { getUserSettingsAdmin } from '@/lib/items-admin';
  * instead of two keeps the provider interface (and therefore any future
  * provider swap) to a single function.
  */
-// Vercel's default Serverless Function duration (10s on Hobby) is shorter
-// than gemini-3.6-flash's real worst-case latency once its internal
-// "thinking" pass is accounted for — this raises the ceiling so the request
-// times out on gemini.ts's own 25s AbortController, with a real error
-// message, rather than being killed mid-flight by the platform.
-export const maxDuration = 30;
+// Vercel's default Serverless Function duration (10s on Hobby) is far
+// shorter than gemini-3.6-flash's real worst-case latency once its internal
+// "thinking" pass is accounted for — 30s still wasn't enough in production
+// (see gemini.ts's TIMEOUT_MS comment). This raises the ceiling so the
+// request times out on gemini.ts's own 55s AbortController, with a real
+// error message, rather than being killed mid-flight by the platform.
+export const maxDuration = 60;
 
 export async function POST(request: Request) {
   const auth = await requireUid(request);

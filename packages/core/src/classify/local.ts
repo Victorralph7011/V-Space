@@ -69,8 +69,17 @@ const IDEA_MARKERS = [
   /\bside project\b/i,
 ];
 
+/**
+ * Several of these keywords — `function`, `class`, `const`, `let`, `def`,
+ * `import` — are also ordinary English words ("a function you highlight",
+ * "business class", "import my contacts"), so each one requires the syntax
+ * that comes with actually using it in code (an opening paren, an
+ * assignment, an identifier before a brace) rather than matching on the bare
+ * word. `public static` and `SELECT … FROM` are left as loose phrase matches
+ * — nobody writes either one in ordinary prose.
+ */
 const CODE_MARKERS =
-  /^\s{4}\S|;\s*$|\b(function|const|let|class|def|import|public static|SELECT)\b/m;
+  /^\s{4}\S|;\s*$|\bfunction\s*\w*\s*\(|\b(const|let)\s+\w+\s*=|\bclass\s+\w+\s*[{(]|\bdef\s+\w+\s*\(|\bimport\s+[\w{*]+\s+from\b|\bpublic static\b|\bSELECT\b.*\bFROM\b/m;
 
 const CODE_FENCE = /^```|\n```/;
 
