@@ -1,0 +1,25 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Mirrors the Firestore model exactly: ownership is the path.
+    match /users/{uid}/{allPaths=**} {
+      allow read: if isSelf(uid);
+
+      // 25 MB ceiling and an image-only content type on create. Without these
+      // an authenticated account could park arbitrary large binaries in the
+      // bucket — the free Storage tier is small enough that one bad upload
+      // loop would exhaust it.
+      allow write: if isSelf(uid)
+        && request.resource.size < 25 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+
+      allow delete: if isSelf(uid);
+    }
+
+    function isSelf(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+  }
+}

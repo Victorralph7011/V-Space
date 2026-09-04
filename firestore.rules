@@ -1,0 +1,33 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── users/{uid} and everything beneath it ──
+    //
+    // V-Space is single-tenant by design: an account's data is that account's
+    // data, and nothing is ever shared. Nesting every collection under the
+    // owner's uid means ownership is expressed by the document *path*, not by
+    // a field inside the document.
+    //
+    // That distinction matters. A top-level `items` collection with an
+    // `ownerId` field would need every rule to compare `resource.data.ownerId`
+    // on read and `request.resource.data.ownerId` on write, and a single
+    // forgotten check on a new subcollection would leak. Here there is nothing
+    // to forget and nothing to spoof — a client cannot even name a path it
+    // does not own.
+    match /users/{uid} {
+      allow read, write: if isSelf(uid);
+
+      // Recursive wildcard covers items/, messages/ and any collection added
+      // later. New features inherit correct security instead of requesting it.
+      match /{document=**} {
+        allow read, write: if isSelf(uid);
+      }
+    }
+
+    function isSelf(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+  }
+}

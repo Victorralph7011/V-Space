@@ -1,0 +1,162 @@
+/*
+ * GENERATED FILE — DO NOT EDIT.
+ * Source: packages/tokens/src/*.ts   Regenerate: npm run gen:css
+ */
+
+@theme {
+  /* ── Type ── */
+  --font-display: 'Clash Display', 'Satoshi', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Satoshi', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+
+  --text-display: 44px;
+  --text-display--line-height: 46px;
+  --text-display--font-weight: 800;
+  --text-display--letter-spacing: -1.8px;
+  --text-title: 28px;
+  --text-title--line-height: 32px;
+  --text-title--font-weight: 800;
+  --text-title--letter-spacing: -0.9px;
+  --text-heading: 20px;
+  --text-heading--line-height: 25px;
+  --text-heading--font-weight: 700;
+  --text-heading--letter-spacing: -0.4px;
+  --text-subheading: 15px;
+  --text-subheading--line-height: 20px;
+  --text-subheading--font-weight: 700;
+  --text-subheading--letter-spacing: -0.2px;
+  --text-body: 15px;
+  --text-body--line-height: 22px;
+  --text-body--font-weight: 400;
+  --text-body--letter-spacing: 0px;
+  --text-body-sm: 13px;
+  --text-body-sm--line-height: 19px;
+  --text-body-sm--font-weight: 400;
+  --text-body-sm--letter-spacing: 0px;
+  --text-caption: 12px;
+  --text-caption--line-height: 17px;
+  --text-caption--font-weight: 500;
+  --text-caption--letter-spacing: 0px;
+  --text-micro: 11px;
+  --text-micro--line-height: 14px;
+  --text-micro--font-weight: 600;
+  --text-micro--letter-spacing: 0px;
+  --text-eyebrow: 10.5px;
+  --text-eyebrow--line-height: 14px;
+  --text-eyebrow--font-weight: 800;
+  --text-eyebrow--letter-spacing: 1.4px;
+  --text-code: 13px;
+  --text-code--line-height: 20px;
+  --text-code--font-weight: 400;
+  --text-code--letter-spacing: 0px;
+
+  /* ── Radii ── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* ── Motion ── */
+  --duration-fast: 140ms;
+  --duration-base: 240ms;
+  --duration-slow: 420ms;
+  --ease-v: cubic-bezier(0.77, 0, 0.175, 1);
+
+  /* ── Layout ── */
+  --v-content: 760px;
+  --v-shell: 1440px;
+  --v-rail: 232px;
+  --v-detail: 380px;
+  --v-breakpoint: 768px;
+
+  /*
+   * Colors are declared here so Tailwind emits the utility classes,
+   * then re-pointed at live `--p-*` variables below. The utilities are
+   * generated once; the values they resolve to follow the active theme.
+   */
+  --color-bg: var(--p-bg);
+  --color-bg-elevated: var(--p-bg-elevated);
+  --color-surface: var(--p-surface);
+  --color-surface-hi: var(--p-surface-hi);
+  --color-surface-press: var(--p-surface-press);
+  --color-border: var(--p-border);
+  --color-border-strong: var(--p-border-strong);
+  --color-text: var(--p-text);
+  --color-text-muted: var(--p-text-muted);
+  --color-text-faint: var(--p-text-faint);
+  --color-text-inverse: var(--p-text-inverse);
+  --color-accent: var(--p-accent);
+  --color-accent-dim: var(--p-accent-dim);
+  --color-accent-soft: var(--p-accent-soft);
+  --color-done: var(--p-done);
+  --color-overdue: var(--p-overdue);
+  --color-overlay: var(--p-overlay);
+}
+
+/* ── Light (default) ── */
+:root {
+  --p-bg: #FFFFFF;
+  --p-bg-elevated: #FAFAFA;
+  --p-surface: #F4F4F5;
+  --p-surface-hi: #EBEBEC;
+  --p-surface-press: #E0E0E2;
+  --p-border: #E6E6E8;
+  --p-border-strong: #C9C9CD;
+  --p-text: #0A0A0B;
+  --p-text-muted: #6B6B72;
+  --p-text-faint: #9C9CA3;
+  --p-text-inverse: #FFFFFF;
+  --p-accent: #0A0A0B;
+  --p-accent-dim: #3A3A41;
+  --p-accent-soft: rgba(10, 10, 11, 0.06);
+  --p-done: #9C9CA3;
+  --p-overdue: #0A0A0B;
+  --p-overlay: rgba(10, 10, 11, 0.44);
+  color-scheme: light;
+}
+
+/* ── Dark ── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --p-bg: #08080A;
+    --p-bg-elevated: #101012;
+    --p-surface: #17171A;
+    --p-surface-hi: #212125;
+    --p-surface-press: #2C2C31;
+    --p-border: #26262B;
+    --p-border-strong: #3A3A41;
+    --p-text: #FAFAFA;
+    --p-text-muted: #9C9CA3;
+    --p-text-faint: #5F5F67;
+    --p-text-inverse: #08080A;
+    --p-accent: #FFFFFF;
+    --p-accent-dim: #C6C6CC;
+    --p-accent-soft: rgba(255, 255, 255, 0.08);
+    --p-done: #5F5F67;
+    --p-overdue: #FFFFFF;
+    --p-overlay: rgba(8, 8, 10, 0.72);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --p-bg: #08080A;
+  --p-bg-elevated: #101012;
+  --p-surface: #17171A;
+  --p-surface-hi: #212125;
+  --p-surface-press: #2C2C31;
+  --p-border: #26262B;
+  --p-border-strong: #3A3A41;
+  --p-text: #FAFAFA;
+  --p-text-muted: #9C9CA3;
+  --p-text-faint: #5F5F67;
+  --p-text-inverse: #08080A;
+  --p-accent: #FFFFFF;
+  --p-accent-dim: #C6C6CC;
+  --p-accent-soft: rgba(255, 255, 255, 0.08);
+  --p-done: #5F5F67;
+  --p-overdue: #FFFFFF;
+  --p-overlay: rgba(8, 8, 10, 0.72);
+  color-scheme: dark;
+}

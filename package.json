@@ -1,0 +1,25 @@
+{
+  "name": "v-space",
+  "version": "0.1.0",
+  "private": true,
+  "description": "V-Space — a personal storage device for links, prompts, images, ideas and reminders",
+  "workspaces": [
+    "packages/*",
+    "apps/web",
+    "apps/mobile"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=apps/web",
+    "dev:mobile": "npm run start --workspace=apps/mobile",
+    "build": "npm run build --workspace=apps/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "emulators": "firebase emulators:start",
+    "gen:css": "node --experimental-strip-types --no-warnings scripts/gen-tokens-css.ts",
+    "seed": "node --experimental-strip-types --no-warnings scripts/seed.ts",
+    "test": "node --experimental-strip-types --no-warnings --test \"packages/core/src/**/*.test.ts\" \"apps/web/src/**/*.test.ts\""
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  }
+}

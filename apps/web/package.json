@@ -1,0 +1,35 @@
+{
+  "name": "@vspace/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "node --experimental-strip-types --no-warnings ../../scripts/gen-tokens-css.ts && next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "predev": "node --experimental-strip-types --no-warnings ../../scripts/gen-tokens-css.ts"
+  },
+  "dependencies": {
+    "@vspace/core": "*",
+    "@vspace/tokens": "*",
+    "firebase": "^12.17.1",
+    "firebase-admin": "^13.5.0",
+    "framer-motion": "^12.38.0",
+    "lucide-react": "^1.11.0",
+    "next": "16.2.4",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.4",
+    "tailwindcss": "^4",
+    "typescript": "^5.9.3"
+  }
+}
